@@ -14,4 +14,11 @@ Day 1: Initialize Smart Billing System project structure
 • Defined basic UI structure to support future features
 • Focused on clean structure and scalability
 Day 2: Implement core logic and complete functional flow
+• Implemented full application logic using JavaScript
+• Connected HTML, CSS, and JavaScript files properly
+• Added product handling and billing calculation logic
+• Implemented role-based flow for Admin and Employee
+• Ensured bill creation, total calculation, and reset functionality
+• Improved UI interactions and responsiveness
+• Project is now functionally complete and ready for enhancements
 
