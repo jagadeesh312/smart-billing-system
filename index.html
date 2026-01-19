@@ -13,8 +13,8 @@
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
   <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
  </head>
- <body><!-- Toast Container -->
-  <div class="toast-container" id="toastContainer"></div><!-- Login Page -->
+ <body>
+  <div class="toast-container" id="toastContainer"></div>
   <div class="login-container" id="loginPage">
    <div class="login-box glass">
     <div class="login-logo">
@@ -32,7 +32,7 @@
       Employee: emp1 / emp123
     </div>
    </div>
-  </div><!-- Admin Dashboard -->
+  </div>
   <div class="dashboard" id="adminDashboard">
    <header class="header glass">
     <div class="shop-name"><i class="fas fa-store"></i> <span id="adminShopName">Smart Billing System</span>
@@ -112,7 +112,7 @@
        </table>
       </div>
      </div>
-    </div><!-- Products Tab -->
+    </div>
     <div class="tab-content" id="admin-products">
      <div class="glass" style="padding: 25px; margin-bottom: 20px;">
       <h3 style="margin-bottom: 20px;"><i class="fas fa-plus-circle"></i> Add New Product</h3>
@@ -150,7 +150,7 @@
        <tbody></tbody>
       </table>
      </div>
-    </div><!-- Sales History Tab -->
+    </div>
     <div class="tab-content" id="admin-sales">
      <div class="glass table-container" style="padding: 25px;">
       <h3 style="margin-bottom: 20px;"><i class="fas fa-history"></i> All Sales</h3>
@@ -171,7 +171,7 @@
        <tbody></tbody>
       </table>
      </div>
-    </div><!-- Employees Tab -->
+    </div>
     <div class="tab-content" id="admin-employees">
      <div class="glass" style="padding: 25px; margin-bottom: 20px;">
       <h3 style="margin-bottom: 20px;"><i class="fas fa-user-plus"></i> Add Employee</h3>
@@ -200,7 +200,7 @@
        <tbody></tbody>
       </table>
      </div>
-    </div><!-- Settings Tab -->
+    </div>
     <div class="tab-content" id="admin-settings">
      <div class="settings-card glass">
       <h3 class="settings-title"><i class="fas fa-store"></i> Shop Settings</h3>
@@ -226,8 +226,8 @@
        </div>
       </div>
      </div>
-    </div><!-- Admin Billing Tab -->
-    <div class="tab-content" id="admin-billing"><!-- Same POS layout as employee -->
+    </div>
+    <div class="tab-content" id="admin-billing">
      <div class="pos-layout">
       <div class="products-section glass">
        <div class="search-bar"><input type="text" class="search-input" id="adminSearchInput" placeholder="Search products..." oninput="filterProducts('admin')"> <button class="voice-btn" id="adminVoiceBtn" onclick="startVoiceRecognition('admin')"> <i class="fas fa-microphone"></i> Voice </button>
@@ -360,4 +360,3 @@
   </div>
   <script src="scripts/script.js"></script>
 </html>
-
