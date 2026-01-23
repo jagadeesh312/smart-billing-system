@@ -23,6 +23,5 @@ Today I created this repository to start building a Smart Billing System website
 ## Day 3:Improved Smart Billing logic and flow
 Enhanced AI responses for billing queries
 Optimized product selection and total calculation
-Improved UI interaction for faster billing
-Fixed minor bugs and tested overall functionality
+Improved UI interaction for faster bill functionality
 
