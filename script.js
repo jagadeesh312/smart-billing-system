@@ -1,4 +1,4 @@
-    // ==================== CONFIGURATION ====================
+
         const defaultConfig = {
             shop_name: 'Smart Billing System',
             upi_id: '890xxxx@ybl'
@@ -6,7 +6,6 @@
 
         let config = { ...defaultConfig };
 
-        // Element SDK Integration
         if (window.elementSdk) {
             window.elementSdk.init({
                 defaultConfig,
@@ -40,7 +39,6 @@
             }
         }
 
-        // ==================== SAMPLE DATA ====================
     
 fetch('data.php')
   .then(res => res.json())
@@ -52,14 +50,12 @@ fetch('data.php')
       console.log(sampleProducts);
   });
 
-        // ==================== STATE ====================
         let currentUser = null;
         let selectedRole = 'admin';
         let cart = { admin: [], emp: [] };
         let currentBillData = null;
         let currentPaymentContext = null;
 
-        // ==================== LOCAL STORAGE ====================
         function initializeData() {
             if (!localStorage.getItem('sbs_products')) {
                 localStorage.setItem('sbs_products', JSON.stringify(sampleProducts));
@@ -128,7 +124,6 @@ fetch('data.php')
             return 'BILL-' + counter;
         }
 
-        // ==================== TOAST NOTIFICATIONS ====================
         function showToast(message, type = 'info') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
@@ -143,7 +138,6 @@ fetch('data.php')
             toast.innerHTML = `<i class="fas ${icons[type]}"></i> ${message}`;
             container.appendChild(toast);
             
-            // Play sound
             playSound(type);
             
             setTimeout(() => {
@@ -153,7 +147,6 @@ fetch('data.php')
         }
 
         function playSound(type) {
-            // Create audio context for sound feedback
             try {
                 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 const oscillator = audioContext.createOscillator();
@@ -177,11 +170,9 @@ fetch('data.php')
                     oscillator.stop();
                 }, 100);
             } catch (e) {
-                // Audio not supported
             }
         }
 
-        // ==================== AUTHENTICATION ====================
         function selectRole(role) {
             selectedRole = role;
             document.querySelectorAll('.role-btn').forEach(btn => {
@@ -237,7 +228,6 @@ fetch('data.php')
             showToast('Logged out successfully', 'info');
         }
 
-        // ==================== DASHBOARD LOADING ====================
         function loadAdminDashboard() {
             updateStats();
             loadProducts('admin');
@@ -265,7 +255,6 @@ fetch('data.php')
             document.getElementById('totalEmployees').textContent = employees.length;
         }
 
-        // ==================== TAB NAVIGATION ====================
         function switchTab(tabId) {
             document.querySelectorAll('.nav-tab').forEach(tab => {
                 tab.classList.toggle('active', tab.dataset.tab === tabId);
@@ -275,13 +264,10 @@ fetch('data.php')
                 content.classList.toggle('active', content.id === tabId);
             });
         }
-
-        // ==================== PRODUCTS ====================
         function loadProducts(context) {
             const products = getProducts();
             const categories = ['All', ...new Set(products.map(p => p.category))];
-            
-            // Load category filter
+
             const filterContainer = document.getElementById(`${context}CategoryFilter`);
             filterContainer.innerHTML = categories.map(cat => 
                 `<button class="category-btn ${cat === 'All' ? 'active' : ''}" onclick="filterByCategory('${cat}', '${context}')">${cat}</button>`
@@ -1326,4 +1312,5 @@ document.getElementById('paymentModal').classList.add('active');
         init();
     </script>
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9beec561f31bb2bb',t:'MTc2ODU3ODY1Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+
 
