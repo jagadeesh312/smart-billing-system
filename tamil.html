@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="UTF-8">
+<title>ஸ்மார்ட் பில்லிங் AI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* BACKGROUND */
+body {
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  background:
+    linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+    url("https://images.unsplash.com/photo-1557683316-973673baf926?w=1920&q=80");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+}
+
+/* TOP BAR */
+.btn-row {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(16px);
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.25);
+  z-index: 1000;
+}
+
+.btn-row button {
+  flex: 1;
+  padding: 12px;
+  font-size: 14px;
+  color: white;
+  cursor: pointer;
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 10px;
+}
+
+.btn-row button:first-child {
+  background: rgba(71,85,105,0.45);
+}
+
+/* MAIN APP */
+.app {
+  width: 360px;
+  padding: 20px;
+  margin-top: 90px;
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(20px);
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.25);
+  box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+}
+
+h1 {
+  text-align: center;
+  font-size: 20px;
+  margin-bottom: 6px;
+}
+
+.status {
+  text-align: center;
+  font-size: 14px;
+  color: #7dd3fc;
+  margin-bottom: 10px;
+}
+
+/* LOG & BILL */
+.log, .bill {
+  margin-top: 12px;
+  padding: 12px;
+  height: 120px;
+  overflow-y: auto;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(14px);
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.25);
+  font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- TOP CONTROLS -->
+<div class="btn-row">
+  <button onclick="goBack()">⬅ பின்செல்</button>
+  <button onclick="startListening()">🎤 பேசு</button>
+</div>
+
+<!-- MAIN APP -->
+<div class="app">
+  <h1>🧾 ஸ்மார்ட் பில்லிங் AI</h1>
+  <div class="status" id="status">பேச தொடு</div>
+  <div class="log" id="log"></div>
+  <div class="bill" id="bill"></div>
+</div>
+
+<script>
+/* =====================
+   DATA
+===================== */
+const products = {
+  "பால்": 60,
+  "அரிசி": 55,
+  "சர்க்கரை": 45,
+  "ரொட்டி": 40
+};
+
+const numberWords = {
+  "ஒரு":1, "இரண்டு":2, "மூன்று":3, "நான்கு":4, "ஐந்து":5,
+  "ஆறு":6, "ஏழு":7, "எட்டு":8, "ஒன்பது":9, "பத்து":10
+};
+
+let bill = {};
+
+/* =====================
+   SPEECH SETUP
+===================== */
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+const recognition = new SpeechRecognition();
+recognition.lang = "ta-IN";
+recognition.interimResults = false;
+
+function startListening() {
+  status("கேட்கிறது...");
+  recognition.start();
+}
+
+recognition.onresult = (e) => {
+  const text = e.results[0][0].transcript;
+  log("👤 " + text);
+  handleCommand(text);
+};
+
+recognition.onend = () => status("பேச தொடு");
+
+/* =====================
+   COMMAND HANDLER
+===================== */
+function handleCommand(text) {
+
+  if (text.includes("நீ யார்")) {
+    speak("நான் ஸ்மார்ட் பில்லிங் AI அமைப்பு.");
+    return;
+  }
+
+  if (text.includes("உன்னை யார் உருவாக்கினார்கள்")) {
+    speak("என்னை SBAS குழு மற்றும் ஜகதீஷ் உருவாக்கினார்கள்.");
+    return;
+  }
+
+  if (text.includes("தேதி")) {
+    const today = new Date().toLocaleDateString("ta-IN", {
+      day: "numeric", month: "long", year: "numeric"
+    });
+    speak("இன்றைய தேதி " + today);
+    return;
+  }
+
+  if (text.includes("கிளியர்") || text.includes("அனைத்தையும் நீக்கு")) {
+    bill = {};
+    updateBill();
+    speak("பில் நீக்கப்பட்டது.");
+    return;
+  }
+
+  if (text.includes("விலை")) {
+    for (let item in products) {
+      if (text.includes(item)) {
+        speak(item + " விலை ரூபாய் " + products[item]);
+        return;
+      }
+    }
+  }
+
+  if (text.includes("மொத்த")) {
+    let total = 0;
+    for (let item in bill) total += bill[item] * products[item];
+    speak("மொத்த தொகை ரூபாய் " + total);
+    return;
+  }
+
+  if (text.includes("மீண்டும்")) {
+    if (Object.keys(bill).length === 0) {
+      speak("பில் காலியாக உள்ளது.");
+      return;
+    }
+    let summary = [];
+    for (let item in bill) summary.push(bill[item] + " " + item);
+    speak("உங்கள் பிலில் " + summary.join(", "));
+    return;
+  }
+
+  if (text.includes("நீக்கு")) {
+    let qty = 1;
+    for (let n in numberWords) if (text.includes(n)) qty = numberWords[n];
+
+    for (let item in bill) {
+      if (text.includes(item)) {
+        bill[item] -= qty;
+        if (bill[item] <= 0) delete bill[item];
+        updateBill();
+        speak(qty + " " + item + " நீக்கப்பட்டது.");
+        return;
+      }
+    }
+  }
+
+  const parts = text.split(" மற்றும் ");
+  let added = [];
+
+  parts.forEach(part => {
+    let qty = 1;
+    for (let n in numberWords) if (part.includes(n)) qty = numberWords[n];
+
+    for (let item in products) {
+      if (part.includes(item)) {
+        bill[item] = (bill[item] || 0) + qty;
+        added.push(qty + " " + item);
+      }
+    }
+  });
+
+  if (added.length) {
+    updateBill();
+    speak(added.join(" மற்றும் ") + " சேர்க்கப்பட்டது.");
+    return;
+  }
+
+  speak("மன்னிக்கவும், புரியவில்லை.");
+}
+
+/* =====================
+   BILL UI
+===================== */
+function updateBill() {
+  let html = "<b>பில்</b><br>";
+  let total = 0;
+
+  for (let item in bill) {
+    const cost = bill[item] * products[item];
+    total += cost;
+    html += `${item} x ${bill[item]} = ₹${cost}<br>`;
+  }
+
+  html += `<b>மொத்தம்: ₹${total}</b>`;
+  document.getElementById("bill").innerHTML = html;
+}
+
+/* =====================
+   HELPERS
+===================== */
+function speak(text) {
+  log("🤖 " + text);
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "ta-IN";
+  speechSynthesis.speak(u);
+}
+
+function log(t) {
+  const d = document.getElementById("log");
+  d.innerHTML += t + "<br>";
+  d.scrollTop = d.scrollHeight;
+}
+
+function status(t) {
+  document.getElementById("status").innerText = t;
+}
+
+function goBack() {
+  history.back();
+}
+</script>
+
+</body>
+</html>
