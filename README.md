@@ -1,6 +1,5 @@
 # smart-billing-system
-A smart billing website project – planning and documentation phase
-# Smart Billing System
+A smart billing website project 
 
 
 Today I created this repository to start building a Smart Billing System website.
