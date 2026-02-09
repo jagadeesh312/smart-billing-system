@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>स्मार्ट बिलिंग AI</title>
+<title>Smart Billing AI System</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -18,10 +18,11 @@ body {
   min-height: 100vh;
   background:
     linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
-    url("https://images.unsplash.com/photo-1557683316-973673baf926?w=1920&q=80");
+    url("https://i.pinimg.com/736x/b0/21/06/b0210669be120b2c1b2d2cc4f25bfcbd.jpg");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -103,14 +104,14 @@ h1 {
 
 <!-- TOP CONTROLS -->
 <div class="btn-row">
-  <button onclick="goBack()">⬅ वापस</button>
-  <button onclick="startListening()">🎤 बोलिए</button>
+  <button onclick="goBack()">⬅ Back</button>
+  <button onclick="startListening()">🎤 Speak</button>
 </div>
 
 <!-- MAIN APP -->
 <div class="app">
-  <h1>🧾 स्मार्ट बिलिंग AI</h1>
-  <div class="status" id="status">बोलने के लिए दबाएँ</div>
+  <h1>🧾 Smart Billing AI</h1>
+  <div class="status" id="status">Tap and speak</div>
   <div class="log" id="log"></div>
   <div class="bill" id="bill"></div>
 </div>
@@ -120,15 +121,15 @@ h1 {
    DATA
 ===================== */
 const products = {
-  "दूध": 60,
-  "चावल": 55,
-  "चीनी": 45,
-  "ब्रेड": 40
+  milk: 60,
+  rice: 55,
+  sugar: 45,
+  bread: 40
 };
 
 const numberWords = {
-  "एक":1, "दो":2, "तीन":3, "चार":4, "पांच":5,
-  "छह":6, "सात":7, "आठ":8, "नौ":9, "दस":10
+  one:1, two:2, three:3, four:4, five:5,
+  six:6, seven:7, eight:8, nine:9, ten:10
 };
 
 let bill = {};
@@ -138,80 +139,95 @@ let bill = {};
 ===================== */
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = new SpeechRecognition();
-recognition.lang = "hi-IN";
+recognition.lang = "en-IN";
 recognition.interimResults = false;
 
 function startListening() {
-  status("सुन रहा है...");
+  status("Listening...");
   recognition.start();
 }
 
 recognition.onresult = (e) => {
-  const text = e.results[0][0].transcript;
+  const text = e.results[0][0].transcript.toLowerCase();
   log("👤 " + text);
   handleCommand(text);
 };
 
-recognition.onend = () => status("बोलने के लिए दबाएँ");
+recognition.onend = () => status("Tap and speak");
 
 /* =====================
    COMMAND HANDLER
 ===================== */
 function handleCommand(text) {
 
-  if (text.includes("तुम कौन हो")) {
-    speak("मैं स्मार्ट बिलिंग एआई सिस्टम हूँ।");
+  // WHO ARE YOU
+  if (text.includes("who are you")) {
+    speak("I am Smart Billing AI System.");
     return;
   }
 
-  if (text.includes("तुम्हें किसने बनाया")) {
-    speak("मुझे एस बी ए एस टीम और जगदीश ने बनाया है।");
+  // WHO CREATED YOU
+  if (text.includes("who created you")) {
+    speak("I was created by SBAS Team and Jagadeesh.");
     return;
   }
 
-  if (text.includes("तारीख")) {
-    const today = new Date().toLocaleDateString("hi-IN", {
-      day: "numeric", month: "long", year: "numeric"
+  // DATE
+  if (text.includes("date")) {
+    const today = new Date().toLocaleDateString("en-IN", {
+      day: "numeric",
+      month: "long",
+      year: "numeric"
     });
-    speak("आज की तारीख " + today);
+    speak("Today is " + today);
     return;
   }
 
-  if (text.includes("क्लियर") || text.includes("सब हटाओ")) {
+  // CLEAR / REMOVE ALL
+  if (
+    text.includes("clear") ||
+    text.includes("remove all") ||
+    text.includes("clear bill") ||
+    text.includes("remove everything")
+  ) {
     bill = {};
     updateBill();
-    speak("बिल साफ कर दिया गया है।");
+    speak("Bill cleared.");
     return;
   }
 
-  if (text.includes("दाम") || text.includes("कीमत")) {
+  // PRICE QUERY
+  if (text.includes("price")) {
     for (let item in products) {
       if (text.includes(item)) {
-        speak(item + " का दाम " + products[item] + " रुपये है");
+        speak("The price of " + item + " is rupees " + products[item]);
         return;
       }
     }
   }
 
-  if (text.includes("कुल")) {
+  // TOTAL AMOUNT
+  if (text.includes("total")) {
     let total = 0;
     for (let item in bill) total += bill[item] * products[item];
-    speak("कुल राशि " + total + " रुपये है");
+    speak("Total amount is rupees " + total);
     return;
   }
 
-  if (text.includes("दोहराओ")) {
+  // REPEAT BILL
+  if (text.includes("repeat")) {
     if (Object.keys(bill).length === 0) {
-      speak("बिल खाली है।");
+      speak("The bill is empty.");
       return;
     }
     let summary = [];
     for (let item in bill) summary.push(bill[item] + " " + item);
-    speak("आपके बिल में " + summary.join(", "));
+    speak("Your bill has " + summary.join(", "));
     return;
   }
 
-  if (text.includes("हटाओ")) {
+  // REMOVE SINGLE ITEM
+  if (text.includes("remove")) {
     let qty = 1;
     for (let n in numberWords) if (text.includes(n)) qty = numberWords[n];
 
@@ -220,13 +236,14 @@ function handleCommand(text) {
         bill[item] -= qty;
         if (bill[item] <= 0) delete bill[item];
         updateBill();
-        speak(qty + " " + item + " हटा दिया गया");
+        speak(qty + " " + item + " removed.");
         return;
       }
     }
   }
 
-  const parts = text.split(" और ");
+  // ADD MULTIPLE ITEMS
+  const parts = text.split(" and ");
   let added = [];
 
   parts.forEach(part => {
@@ -243,18 +260,18 @@ function handleCommand(text) {
 
   if (added.length) {
     updateBill();
-    speak(added.join(" और ") + " जोड़ा गया");
+    speak(added.join(" and ") + " added.");
     return;
   }
 
-  speak("माफ़ कीजिए, मुझे समझ नहीं आया।");
+  speak("Sorry, I did not understand.");
 }
 
 /* =====================
    BILL UI
 ===================== */
 function updateBill() {
-  let html = "<b>बिल</b><br>";
+  let html = "<b>Bill</b><br>";
   let total = 0;
 
   for (let item in bill) {
@@ -263,7 +280,7 @@ function updateBill() {
     html += `${item} x ${bill[item]} = ₹${cost}<br>`;
   }
 
-  html += `<b>कुल: ₹${total}</b>`;
+  html += `<b>Total: ₹${total}</b>`;
   document.getElementById("bill").innerHTML = html;
 }
 
@@ -273,7 +290,7 @@ function updateBill() {
 function speak(text) {
   log("🤖 " + text);
   const u = new SpeechSynthesisUtterance(text);
-  u.lang = "hi-IN";
+  u.lang = "en-IN";
   speechSynthesis.speak(u);
 }
 
