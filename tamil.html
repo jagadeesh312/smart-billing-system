@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ta">
 <head>
 <meta charset="UTF-8">
-<title>Smart Billing AI System</title>
+<title>ஸ்மார்ட் பில்லிங் AI</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -18,7 +18,7 @@ body {
   min-height: 100vh;
   background:
     linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
-    url("https://i.pinimg.com/736x/b0/21/06/b0210669be120b2c1b2d2cc4f25bfcbd.jpg");
+    url("https://images.unsplash.com/photo-1557683316-973673baf926?w=1920&q=80");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -104,14 +104,14 @@ h1 {
 
 <!-- TOP CONTROLS -->
 <div class="btn-row">
-  <button onclick="goBack()">⬅ Back</button>
-  <button onclick="startListening()">🎤 Speak</button>
+  <button onclick="goBack()">⬅ பின்செல்</button>
+  <button onclick="startListening()">🎤 பேசு</button>
 </div>
 
 <!-- MAIN APP -->
 <div class="app">
-  <h1>🧾 Smart Billing AI</h1>
-  <div class="status" id="status">Tap and speak</div>
+  <h1>🧾 ஸ்மார்ட் பில்லிங் AI</h1>
+  <div class="status" id="status">பேச தொடு</div>
   <div class="log" id="log"></div>
   <div class="bill" id="bill"></div>
 </div>
@@ -121,15 +121,15 @@ h1 {
    DATA
 ===================== */
 const products = {
-  milk: 60,
-  rice: 55,
-  sugar: 45,
-  bread: 40
+  "பால்": 60,
+  "அரிசி": 55,
+  "சர்க்கரை": 45,
+  "ரொட்டி": 40
 };
 
 const numberWords = {
-  one:1, two:2, three:3, four:4, five:5,
-  six:6, seven:7, eight:8, nine:9, ten:10
+  "ஒரு":1, "இரண்டு":2, "மூன்று":3, "நான்கு":4, "ஐந்து":5,
+  "ஆறு":6, "ஏழு":7, "எட்டு":8, "ஒன்பது":9, "பத்து":10
 };
 
 let bill = {};
@@ -139,95 +139,80 @@ let bill = {};
 ===================== */
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = new SpeechRecognition();
-recognition.lang = "en-IN";
+recognition.lang = "ta-IN";
 recognition.interimResults = false;
 
 function startListening() {
-  status("Listening...");
+  status("கேட்கிறது...");
   recognition.start();
 }
 
 recognition.onresult = (e) => {
-  const text = e.results[0][0].transcript.toLowerCase();
+  const text = e.results[0][0].transcript;
   log("👤 " + text);
   handleCommand(text);
 };
 
-recognition.onend = () => status("Tap and speak");
+recognition.onend = () => status("பேச தொடு");
 
 /* =====================
    COMMAND HANDLER
 ===================== */
 function handleCommand(text) {
 
-  // WHO ARE YOU
-  if (text.includes("who are you")) {
-    speak("I am Smart Billing AI System.");
+  if (text.includes("நீ யார்")) {
+    speak("நான் ஸ்மார்ட் பில்லிங் AI அமைப்பு.");
     return;
   }
 
-  // WHO CREATED YOU
-  if (text.includes("who created you")) {
-    speak("I was created by SBAS Team and Jagadeesh.");
+  if (text.includes("உன்னை யார் உருவாக்கினார்கள்")) {
+    speak("என்னை SBAS குழு மற்றும் ஜகதீஷ் உருவாக்கினார்கள்.");
     return;
   }
 
-  // DATE
-  if (text.includes("date")) {
-    const today = new Date().toLocaleDateString("en-IN", {
-      day: "numeric",
-      month: "long",
-      year: "numeric"
+  if (text.includes("தேதி")) {
+    const today = new Date().toLocaleDateString("ta-IN", {
+      day: "numeric", month: "long", year: "numeric"
     });
-    speak("Today is " + today);
+    speak("இன்றைய தேதி " + today);
     return;
   }
 
-  // CLEAR / REMOVE ALL
-  if (
-    text.includes("clear") ||
-    text.includes("remove all") ||
-    text.includes("clear bill") ||
-    text.includes("remove everything")
-  ) {
+  if (text.includes("கிளியர்") || text.includes("அனைத்தையும் நீக்கு")) {
     bill = {};
     updateBill();
-    speak("Bill cleared.");
+    speak("பில் நீக்கப்பட்டது.");
     return;
   }
 
-  // PRICE QUERY
-  if (text.includes("price")) {
+  if (text.includes("விலை")) {
     for (let item in products) {
       if (text.includes(item)) {
-        speak("The price of " + item + " is rupees " + products[item]);
+        speak(item + " விலை ரூபாய் " + products[item]);
         return;
       }
     }
   }
 
-  // TOTAL AMOUNT
-  if (text.includes("total")) {
+  if (text.includes("மொத்த")) {
     let total = 0;
     for (let item in bill) total += bill[item] * products[item];
-    speak("Total amount is rupees " + total);
+    speak("மொத்த தொகை ரூபாய் " + total);
     return;
   }
 
-  // REPEAT BILL
-  if (text.includes("repeat")) {
+  if (text.includes("மீண்டும்")) {
     if (Object.keys(bill).length === 0) {
-      speak("The bill is empty.");
+      speak("பில் காலியாக உள்ளது.");
       return;
     }
     let summary = [];
     for (let item in bill) summary.push(bill[item] + " " + item);
-    speak("Your bill has " + summary.join(", "));
+    speak("உங்கள் பிலில் " + summary.join(", "));
     return;
   }
 
-  // REMOVE SINGLE ITEM
-  if (text.includes("remove")) {
+  if (text.includes("நீக்கு")) {
     let qty = 1;
     for (let n in numberWords) if (text.includes(n)) qty = numberWords[n];
 
@@ -236,14 +221,13 @@ function handleCommand(text) {
         bill[item] -= qty;
         if (bill[item] <= 0) delete bill[item];
         updateBill();
-        speak(qty + " " + item + " removed.");
+        speak(qty + " " + item + " நீக்கப்பட்டது.");
         return;
       }
     }
   }
 
-  // ADD MULTIPLE ITEMS
-  const parts = text.split(" and ");
+  const parts = text.split(" மற்றும் ");
   let added = [];
 
   parts.forEach(part => {
@@ -260,18 +244,18 @@ function handleCommand(text) {
 
   if (added.length) {
     updateBill();
-    speak(added.join(" and ") + " added.");
+    speak(added.join(" மற்றும் ") + " சேர்க்கப்பட்டது.");
     return;
   }
 
-  speak("Sorry, I did not understand.");
+  speak("மன்னிக்கவும், புரியவில்லை.");
 }
 
 /* =====================
    BILL UI
 ===================== */
 function updateBill() {
-  let html = "<b>Bill</b><br>";
+  let html = "<b>பில்</b><br>";
   let total = 0;
 
   for (let item in bill) {
@@ -280,7 +264,7 @@ function updateBill() {
     html += `${item} x ${bill[item]} = ₹${cost}<br>`;
   }
 
-  html += `<b>Total: ₹${total}</b>`;
+  html += `<b>மொத்தம்: ₹${total}</b>`;
   document.getElementById("bill").innerHTML = html;
 }
 
@@ -290,7 +274,7 @@ function updateBill() {
 function speak(text) {
   log("🤖 " + text);
   const u = new SpeechSynthesisUtterance(text);
-  u.lang = "en-IN";
+  u.lang = "ta-IN";
   speechSynthesis.speak(u);
 }
 
