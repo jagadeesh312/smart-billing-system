@@ -4,108 +4,16 @@
 <meta charset="UTF-8">
 <title>ஸ்மார்ட் பில்லிங் AI</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<style>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-/* BACKGROUND */
-body {
-  font-family: Arial, sans-serif;
-  min-height: 100vh;
-  background:
-    linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
-    url("https://images.unsplash.com/photo-1557683316-973673baf926?w=1920&q=80");
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #fff;
-}
-
-/* TOP BAR */
-.btn-row {
-  position: fixed;
-  top: 12px;
-  left: 12px;
-  right: 12px;
-  display: flex;
-  gap: 10px;
-  padding: 10px;
-  background: rgba(255,255,255,0.15);
-  backdrop-filter: blur(16px);
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.25);
-  z-index: 1000;
-}
-
-.btn-row button {
-  flex: 1;
-  padding: 12px;
-  font-size: 14px;
-  color: white;
-  cursor: pointer;
-  background: rgba(255,255,255,0.18);
-  border: 1px solid rgba(255,255,255,0.3);
-  border-radius: 10px;
-}
-
-.btn-row button:first-child {
-  background: rgba(71,85,105,0.45);
-}
-
-/* MAIN APP */
-.app {
-  width: 360px;
-  padding: 20px;
-  margin-top: 90px;
-  background: rgba(255,255,255,0.12);
-  backdrop-filter: blur(20px);
-  border-radius: 18px;
-  border: 1px solid rgba(255,255,255,0.25);
-  box-shadow: 0 25px 50px rgba(0,0,0,0.6);
-}
-
-h1 {
-  text-align: center;
-  font-size: 20px;
-  margin-bottom: 6px;
-}
-
-.status {
-  text-align: center;
-  font-size: 14px;
-  color: #7dd3fc;
-  margin-bottom: 10px;
-}
-
-/* LOG & BILL */
-.log, .bill {
-  margin-top: 12px;
-  padding: 12px;
-  height: 120px;
-  overflow-y: auto;
-  background: rgba(255,255,255,0.1);
-  backdrop-filter: blur(14px);
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.25);
-  font-size: 14px;
-}
-</style>
+<meta name="description" content="Smart Billing AI — voice-enabled billing app">
+<link rel="stylesheet" href="assets/styles.css">
 </head>
 
 <body>
 
 <!-- TOP CONTROLS -->
 <div class="btn-row">
-  <button onclick="goBack()">⬅ பின்செல்</button>
-  <button onclick="startListening()">🎤 பேசு</button>
+  <button class="btn-back" aria-label="பின்செல்">⬅ பின்செல்</button>
+  <button class="btn-speak" aria-label="பேசு">🎤 பேசு</button>
 </div>
 
 <!-- MAIN APP -->
@@ -118,20 +26,42 @@ h1 {
 
 <script>
 /* =====================
+   CONFIGURATION
+===================== */
+const CONFIG = {
+  lang: "ta-IN",
+  speechLang: "ta-IN"
+};
+
+/* =====================
    DATA
 ===================== */
-const products = {
+const PRODUCTS = {
   "பால்": 60,
   "அரிசி": 55,
   "சர்க்கரை": 45,
   "ரொட்டி": 40
 };
 
-const numberWords = {
-  "ஒரு":1, "இரண்டு":2, "மூன்று":3, "நான்கு":4, "ஐந்து":5,
-  "ஆறு":6, "ஏழு":7, "எட்டு":8, "ஒன்பது":9, "பத்து":10
+const NUMBER_WORDS = {
+  "ஒரு": 1, "இரண்டு": 2, "மூன்று": 3, "நான்கு": 4, "ஐந்து": 5,
+  "ஆறு": 6, "ஏழு": 7, "எட்டு": 8, "ஒன்பது": 9, "பத்து": 10
 };
 
+/* =====================
+   DOM CACHE
+===================== */
+const DOM = {
+  status: document.getElementById("status"),
+  log: document.getElementById("log"),
+  bill: document.getElementById("bill"),
+  backBtn: document.querySelector(".btn-back"),
+  speakBtn: document.querySelector(".btn-speak")
+};
+
+/* =====================
+   STATE
+===================== */
 let bill = {};
 
 /* =====================
@@ -139,21 +69,30 @@ let bill = {};
 ===================== */
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = new SpeechRecognition();
-recognition.lang = "ta-IN";
+recognition.lang = CONFIG.lang;
 recognition.interimResults = false;
 
 function startListening() {
-  status("கேட்கிறது...");
-  recognition.start();
+  updateStatus("கேட்கிறது...");
+  try {
+    recognition.start();
+  } catch (e) {
+    console.error("Recognition already started");
+  }
 }
 
 recognition.onresult = (e) => {
   const text = e.results[0][0].transcript;
-  log("👤 " + text);
+  addLog("👤 " + text);
   handleCommand(text);
 };
 
-recognition.onend = () => status("பேச தொடு");
+recognition.onerror = (e) => {
+  updateStatus("பிழை: " + e.error);
+  console.error("Speech Recognition error:", e.error);
+};
+
+recognition.onend = () => updateStatus("பேச தொடு");
 
 /* =====================
    COMMAND HANDLER
@@ -171,33 +110,32 @@ function handleCommand(text) {
   }
 
   if (text.includes("தேதி")) {
-    const today = new Date().toLocaleDateString("ta-IN", {
+    const today = new Date().toLocaleDateString(CONFIG.lang, {
       day: "numeric", month: "long", year: "numeric"
     });
-    speak("இன்றைய தேதி " + today);
+    speak(`இன்றைய தேதி ${today}`);
     return;
   }
 
   if (text.includes("கிளியர்") || text.includes("அனைத்தையும் நீக்கு")) {
     bill = {};
-    updateBill();
+    updateBillDisplay();
     speak("பில் நீக்கப்பட்டது.");
     return;
   }
 
   if (text.includes("விலை")) {
-    for (let item in products) {
+    for (const item in PRODUCTS) {
       if (text.includes(item)) {
-        speak(item + " விலை ரூபாய் " + products[item]);
+        speak(`${item} விலை ரூபாய் ${PRODUCTS[item]}`);
         return;
       }
     }
   }
 
   if (text.includes("மொத்த")) {
-    let total = 0;
-    for (let item in bill) total += bill[item] * products[item];
-    speak("மொத்த தொகை ரூபாய் " + total);
+    const total = calculateTotal();
+    speak(`மொத்த தொகை ரூபாய் ${total}`);
     return;
   }
 
@@ -206,45 +144,40 @@ function handleCommand(text) {
       speak("பில் காலியாக உள்ளது.");
       return;
     }
-    let summary = [];
-    for (let item in bill) summary.push(bill[item] + " " + item);
-    speak("உங்கள் பிலில் " + summary.join(", "));
+    const summary = Object.entries(bill).map(([item, qty]) => `${qty} ${item}`);
+    speak(`உங்கள் பிலில் ${summary.join(", ")}`);
     return;
   }
 
   if (text.includes("நீக்கு")) {
-    let qty = 1;
-    for (let n in numberWords) if (text.includes(n)) qty = numberWords[n];
-
-    for (let item in bill) {
+    let qty = getQuantityFromText(text);
+    for (const item in bill) {
       if (text.includes(item)) {
         bill[item] -= qty;
         if (bill[item] <= 0) delete bill[item];
-        updateBill();
-        speak(qty + " " + item + " நீக்கப்பட்டது.");
+        updateBillDisplay();
+        speak(`${qty} ${item} நீக்கப்பட்டது.`);
         return;
       }
     }
   }
 
   const parts = text.split(" மற்றும் ");
-  let added = [];
+  const added = [];
 
   parts.forEach(part => {
-    let qty = 1;
-    for (let n in numberWords) if (part.includes(n)) qty = numberWords[n];
-
-    for (let item in products) {
+    let qty = getQuantityFromText(part);
+    for (const item in PRODUCTS) {
       if (part.includes(item)) {
         bill[item] = (bill[item] || 0) + qty;
-        added.push(qty + " " + item);
+        added.push(`${qty} ${item}`);
       }
     }
   });
 
   if (added.length) {
-    updateBill();
-    speak(added.join(" மற்றும் ") + " சேர்க்கப்பட்டது.");
+    updateBillDisplay();
+    speak(`${added.join(" மற்றும் ")} சேர்க்கப்பட்டது.`);
     return;
   }
 
@@ -254,43 +187,69 @@ function handleCommand(text) {
 /* =====================
    BILL UI
 ===================== */
-function updateBill() {
+function updateBillDisplay() {
   let html = "<b>பில்</b><br>";
   let total = 0;
 
-  for (let item in bill) {
-    const cost = bill[item] * products[item];
+  for (const item in bill) {
+    const cost = bill[item] * PRODUCTS[item];
     total += cost;
     html += `${item} x ${bill[item]} = ₹${cost}<br>`;
   }
 
   html += `<b>மொத்தம்: ₹${total}</b>`;
-  document.getElementById("bill").innerHTML = html;
+  DOM.bill.innerHTML = html;
 }
 
 /* =====================
    HELPERS
 ===================== */
+function calculateTotal() {
+  let total = 0;
+  for (const item in bill) {
+    total += bill[item] * PRODUCTS[item];
+  }
+  return total;
+}
+
+function getQuantityFromText(text) {
+  for (const numWord in NUMBER_WORDS) {
+    if (text.includes(numWord)) {
+      return NUMBER_WORDS[numWord];
+    }
+  }
+  return 1;
+}
+
 function speak(text) {
-  log("🤖 " + text);
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = "ta-IN";
-  speechSynthesis.speak(u);
+  addLog("🤖 " + text);
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = CONFIG.speechLang;
+  try {
+    speechSynthesis.speak(utterance);
+  } catch (e) {
+    console.error("Speech synthesis error:", e);
+  }
 }
 
-function log(t) {
-  const d = document.getElementById("log");
-  d.innerHTML += t + "<br>";
-  d.scrollTop = d.scrollHeight;
+function addLog(text) {
+  DOM.log.innerHTML += text + "<br>";
+  DOM.log.scrollTop = DOM.log.scrollHeight;
 }
 
-function status(t) {
-  document.getElementById("status").innerText = t;
+function updateStatus(text) {
+  DOM.status.innerText = text;
 }
 
 function goBack() {
-  history.back();
+  window.location.href = 'index.html';
 }
+
+/* =====================
+   EVENT LISTENERS
+===================== */
+DOM.backBtn.addEventListener("click", goBack);
+DOM.speakBtn.addEventListener("click", startListening);
 </script>
 
 </body>
