@@ -4,108 +4,16 @@
 <meta charset="UTF-8">
 <title>ಸ್ಮಾರ್ಟ್ ಬಿಲ್ಲಿಂಗ್ AI</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<style>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-/* BACKGROUND */
-body {
-  font-family: Arial, sans-serif;
-  min-height: 100vh;
-  background:
-    linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
-    url("https://images.unsplash.com/photo-1557683316-973673baf926?w=1920&q=80");
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #fff;
-}
-
-/* TOP BAR */
-.btn-row {
-  position: fixed;
-  top: 12px;
-  left: 12px;
-  right: 12px;
-  display: flex;
-  gap: 10px;
-  padding: 10px;
-  background: rgba(255,255,255,0.15);
-  backdrop-filter: blur(16px);
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.25);
-  z-index: 1000;
-}
-
-.btn-row button {
-  flex: 1;
-  padding: 12px;
-  font-size: 14px;
-  color: white;
-  cursor: pointer;
-  background: rgba(255,255,255,0.18);
-  border: 1px solid rgba(255,255,255,0.3);
-  border-radius: 10px;
-}
-
-.btn-row button:first-child {
-  background: rgba(71,85,105,0.45);
-}
-
-/* MAIN APP */
-.app {
-  width: 360px;
-  padding: 20px;
-  margin-top: 90px;
-  background: rgba(255,255,255,0.12);
-  backdrop-filter: blur(20px);
-  border-radius: 18px;
-  border: 1px solid rgba(255,255,255,0.25);
-  box-shadow: 0 25px 50px rgba(0,0,0,0.6);
-}
-
-h1 {
-  text-align: center;
-  font-size: 20px;
-  margin-bottom: 6px;
-}
-
-.status {
-  text-align: center;
-  font-size: 14px;
-  color: #7dd3fc;
-  margin-bottom: 10px;
-}
-
-/* LOG & BILL */
-.log, .bill {
-  margin-top: 12px;
-  padding: 12px;
-  height: 120px;
-  overflow-y: auto;
-  background: rgba(255,255,255,0.1);
-  backdrop-filter: blur(14px);
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.25);
-  font-size: 14px;
-}
-</style>
+<meta name="description" content="Smart Billing AI — voice-enabled billing app">
+<link rel="stylesheet" href="assets/styles.css">
 </head>
 
 <body>
 
 <!-- TOP CONTROLS -->
 <div class="btn-row">
-  <button onclick="goBack()">⬅ ಹಿಂದಿರುಗು</button>
-  <button onclick="startListening()">🎤 ಮಾತಾಡಿ</button>
+  <button class="btn-back" aria-label="ಹಿಂದಿರುಗಿ">⬅ ಹಿಂದಿರುಗು</button>
+  <button class="btn-speak" aria-label="ಮಾತ್ರವಾಗಲು ಪ್ರಾರಂಭಿಸಿ">🎤 ಮಾತಾಡಿ</button>
 </div>
 
 <!-- MAIN APP -->
@@ -118,20 +26,42 @@ h1 {
 
 <script>
 /* =====================
+   CONFIGURATION
+===================== */
+const CONFIG = {
+  lang: "kn-IN",
+  speechLang: "kn-IN"
+};
+
+/* =====================
    DATA
 ===================== */
-const products = {
+const PRODUCTS = {
   "ಹಾಲು": 60,
   "ಅಕ್ಕಿ": 55,
   "ಸಕ್ಕರೆ": 45,
   "ರೊಟ್ಟಿ": 40
 };
 
-const numberWords = {
-  "ಒಂದು":1, "ಎರಡು":2, "ಮೂರು":3, "ನಾಲ್ಕು":4, "ಐದು":5,
-  "ಆರು":6, "ಏಳು":7, "ಎಂಟು":8, "ಒಂಬತ್ತು":9, "ಹತ್ತು":10
+const NUMBER_WORDS = {
+  "ಒಂದು": 1, "ಎರಡು": 2, "ಮೂರು": 3, "ನಾಲ್ಕು": 4, "ಐದು": 5,
+  "ಆರು": 6, "ಏಳು": 7, "ಎಂಟು": 8, "ಒಂಬತ್ತು": 9, "ಹತ್ತು": 10
 };
 
+/* =====================
+   DOM CACHE
+===================== */
+const DOM = {
+  status: document.getElementById("status"),
+  log: document.getElementById("log"),
+  bill: document.getElementById("bill"),
+  backBtn: document.querySelector(".btn-back"),
+  speakBtn: document.querySelector(".btn-speak")
+};
+
+/* =====================
+   STATE
+===================== */
 let bill = {};
 
 /* =====================
@@ -139,21 +69,30 @@ let bill = {};
 ===================== */
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = new SpeechRecognition();
-recognition.lang = "kn-IN";
+recognition.lang = CONFIG.lang;
 recognition.interimResults = false;
 
 function startListening() {
-  status("ಕೆಳಿಸುತ್ತಿದೆ...");
-  recognition.start();
+  updateStatus("ಕೆಳಿಸುತ್ತಿದೆ...");
+  try {
+    recognition.start();
+  } catch (e) {
+    console.error("Recognition already started");
+  }
 }
 
 recognition.onresult = (e) => {
   const text = e.results[0][0].transcript;
-  log("👤 " + text);
+  addLog("👤 " + text);
   handleCommand(text);
 };
 
-recognition.onend = () => status("ಮಾತಾಡಲು ಒತ್ತಿರಿ");
+recognition.onerror = (e) => {
+  updateStatus("ದೋಷ: " + e.error);
+  console.error("Speech Recognition error:", e.error);
+};
+
+recognition.onend = () => updateStatus("ಮಾತಾಡಲು ಒತ್ತಿರಿ");
 
 /* =====================
    COMMAND HANDLER
@@ -171,33 +110,32 @@ function handleCommand(text) {
   }
 
   if (text.includes("ದಿನಾಂಕ")) {
-    const today = new Date().toLocaleDateString("kn-IN", {
+    const today = new Date().toLocaleDateString(CONFIG.lang, {
       day: "numeric", month: "long", year: "numeric"
     });
-    speak("ಇಂದಿನ ದಿನಾಂಕ " + today);
+    speak(`ಇಂದಿನ ದಿನಾಂಕ ${today}`);
     return;
   }
 
   if (text.includes("ಕ್ಲಿಯರ್") || text.includes("ಎಲ್ಲವನ್ನೂ ತೆಗೆ")) {
     bill = {};
-    updateBill();
+    updateBillDisplay();
     speak("ಬಿಲ್ ಕ್ಲಿಯರ್ ಮಾಡಲಾಗಿದೆ.");
     return;
   }
 
   if (text.includes("ಬೆಲೆ")) {
-    for (let item in products) {
+    for (const item in PRODUCTS) {
       if (text.includes(item)) {
-        speak(item + " ಬೆಲೆ ರೂ " + products[item]);
+        speak(`${item} ಬೆಲೆ ರೂ ${PRODUCTS[item]}`);
         return;
       }
     }
   }
 
   if (text.includes("ಒಟ್ಟು")) {
-    let total = 0;
-    for (let item in bill) total += bill[item] * products[item];
-    speak("ಒಟ್ಟು ಮೊತ್ತ ರೂ " + total);
+    const total = calculateTotal();
+    speak(`ಒಟ್ಟು ಮೊತ್ತ ರೂ ${total}`);
     return;
   }
 
@@ -206,45 +144,40 @@ function handleCommand(text) {
       speak("ಬಿಲ್ ಖಾಲಿಯಾಗಿದೆ.");
       return;
     }
-    let summary = [];
-    for (let item in bill) summary.push(bill[item] + " " + item);
-    speak("ನಿಮ್ಮ ಬಿಲ್ಲಿನಲ್ಲಿ " + summary.join(", "));
+    const summary = Object.entries(bill).map(([item, qty]) => `${qty} ${item}`);
+    speak(`ನಿಮ್ಮ ಬಿಲ್ಲಿನಲ್ಲಿ ${summary.join(", ")}`);
     return;
   }
 
   if (text.includes("ತೆಗೆ")) {
-    let qty = 1;
-    for (let n in numberWords) if (text.includes(n)) qty = numberWords[n];
-
-    for (let item in bill) {
+    let qty = getQuantityFromText(text);
+    for (const item in bill) {
       if (text.includes(item)) {
         bill[item] -= qty;
         if (bill[item] <= 0) delete bill[item];
-        updateBill();
-        speak(qty + " " + item + " ತೆಗೆದುಹಾಕಲಾಗಿದೆ.");
+        updateBillDisplay();
+        speak(`${qty} ${item} ತೆಗೆದುಹಾಕಲಾಗಿದೆ.`);
         return;
       }
     }
   }
 
   const parts = text.split(" ಮತ್ತು ");
-  let added = [];
+  const added = [];
 
   parts.forEach(part => {
-    let qty = 1;
-    for (let n in numberWords) if (part.includes(n)) qty = numberWords[n];
-
-    for (let item in products) {
+    let qty = getQuantityFromText(part);
+    for (const item in PRODUCTS) {
       if (part.includes(item)) {
         bill[item] = (bill[item] || 0) + qty;
-        added.push(qty + " " + item);
+        added.push(`${qty} ${item}`);
       }
     }
   });
 
   if (added.length) {
-    updateBill();
-    speak(added.join(" ಮತ್ತು ") + " ಸೇರಿಸಲಾಗಿದೆ.");
+    updateBillDisplay();
+    speak(`${added.join(" ಮತ್ತು ")} ಸೇರಿಸಲಾಗಿದೆ.`);
     return;
   }
 
@@ -254,43 +187,69 @@ function handleCommand(text) {
 /* =====================
    BILL UI
 ===================== */
-function updateBill() {
+function updateBillDisplay() {
   let html = "<b>ಬಿಲ್</b><br>";
   let total = 0;
 
-  for (let item in bill) {
-    const cost = bill[item] * products[item];
+  for (const item in bill) {
+    const cost = bill[item] * PRODUCTS[item];
     total += cost;
     html += `${item} x ${bill[item]} = ₹${cost}<br>`;
   }
 
   html += `<b>ಒಟ್ಟು: ₹${total}</b>`;
-  document.getElementById("bill").innerHTML = html;
+  DOM.bill.innerHTML = html;
 }
 
 /* =====================
    HELPERS
 ===================== */
+function calculateTotal() {
+  let total = 0;
+  for (const item in bill) {
+    total += bill[item] * PRODUCTS[item];
+  }
+  return total;
+}
+
+function getQuantityFromText(text) {
+  for (const numWord in NUMBER_WORDS) {
+    if (text.includes(numWord)) {
+      return NUMBER_WORDS[numWord];
+    }
+  }
+  return 1;
+}
+
 function speak(text) {
-  log("🤖 " + text);
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = "kn-IN";
-  speechSynthesis.speak(u);
+  addLog("🤖 " + text);
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = CONFIG.speechLang;
+  try {
+    speechSynthesis.speak(utterance);
+  } catch (e) {
+    console.error("Speech synthesis error:", e);
+  }
 }
 
-function log(t) {
-  const d = document.getElementById("log");
-  d.innerHTML += t + "<br>";
-  d.scrollTop = d.scrollHeight;
+function addLog(text) {
+  DOM.log.innerHTML += text + "<br>";
+  DOM.log.scrollTop = DOM.log.scrollHeight;
 }
 
-function status(t) {
-  document.getElementById("status").innerText = t;
+function updateStatus(text) {
+  DOM.status.innerText = text;
 }
 
 function goBack() {
-  history.back();
+  window.location.href = 'index.html';
 }
+
+/* =====================
+   EVENT LISTENERS
+===================== */
+DOM.backBtn.addEventListener("click", goBack);
+DOM.speakBtn.addEventListener("click", startListening);
 </script>
 
 </body>
