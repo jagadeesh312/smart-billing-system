@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="kn">
+<html lang="ml">
 <head>
 <meta charset="UTF-8">
-<title>ಸ್ಮಾರ್ಟ್ ಬಿಲ್ಲಿಂಗ್ AI</title>
+<title>സ്മാർട്ട് ബില്ലിംഗ് AI</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Smart Billing AI — voice-enabled billing app">
 <link rel="stylesheet" href="assets/styles.css">
@@ -12,14 +12,14 @@
 
 <!-- TOP CONTROLS -->
 <div class="btn-row">
-  <button class="btn-back" aria-label="ಹಿಂದಿರುಗಿ">⬅ ಹಿಂದಿರುಗು</button>
-  <button class="btn-speak" aria-label="ಮಾತ್ರವಾಗಲು ಪ್ರಾರಂಭಿಸಿ">🎤 ಮಾತಾಡಿ</button>
+  <button class="btn-back" aria-label="പിൻവാങ്ങുക">⬅ പിൻവാങ്ങുക</button>
+  <button class="btn-speak" aria-label="സംസാരിക്കുക">🎤 സംസാരിക്കുക</button>
 </div>
 
 <!-- MAIN APP -->
 <div class="app">
-  <h1>🧾 ಸ್ಮಾರ್ಟ್ ಬಿಲ್ಲಿಂಗ್ AI</h1>
-  <div class="status" id="status">ಮಾತಾಡಲು ಒತ್ತಿರಿ</div>
+  <h1>🧾 സ്മാർട്ട് ബില്ലിംഗ് AI</h1>
+  <div class="status" id="status">സംസാരിക്കാൻ അമർത്തുക</div>
   <div class="log" id="log"></div>
   <div class="bill" id="bill"></div>
 </div>
@@ -29,23 +29,23 @@
    CONFIGURATION
 ===================== */
 const CONFIG = {
-  lang: "kn-IN",
-  speechLang: "kn-IN"
+  lang: "ml-IN",
+  speechLang: "ml-IN"
 };
 
 /* =====================
    DATA
 ===================== */
 const PRODUCTS = {
-  "ಹಾಲು": 60,
-  "ಅಕ್ಕಿ": 55,
-  "ಸಕ್ಕರೆ": 45,
-  "ರೊಟ್ಟಿ": 40
+  "പാൽ": 60,
+  "അരി": 55,
+  "പഞ്ചസാര": 45,
+  "ബ്രെഡ്": 40
 };
 
 const NUMBER_WORDS = {
-  "ಒಂದು": 1, "ಎರಡು": 2, "ಮೂರು": 3, "ನಾಲ್ಕು": 4, "ಐದು": 5,
-  "ಆರು": 6, "ಏಳು": 7, "ಎಂಟು": 8, "ಒಂಬತ್ತು": 9, "ಹತ್ತು": 10
+  "ഒരു": 1, "രണ്ട്": 2, "മൂന്ന്": 3, "നാല്": 4, "അഞ്ച്": 5,
+  "ആറ്": 6, "ഏഴ്": 7, "എട്ട്": 8, "ഒമ്പത്": 9, "പത്ത്": 10
 };
 
 /* =====================
@@ -73,7 +73,7 @@ recognition.lang = CONFIG.lang;
 recognition.interimResults = false;
 
 function startListening() {
-  updateStatus("ಕೆಳಿಸುತ್ತಿದೆ...");
+  updateStatus("കേൾക്കുന്നു...");
   try {
     recognition.start();
   } catch (e) {
@@ -88,81 +88,81 @@ recognition.onresult = (e) => {
 };
 
 recognition.onerror = (e) => {
-  updateStatus("ದೋಷ: " + e.error);
+  updateStatus("പിശക്: " + e.error);
   console.error("Speech Recognition error:", e.error);
 };
 
-recognition.onend = () => updateStatus("ಮಾತಾಡಲು ಒತ್ತಿರಿ");
+recognition.onend = () => updateStatus("സംസാരിക്കാൻ അമർത്തുക");
 
 /* =====================
    COMMAND HANDLER
 ===================== */
 function handleCommand(text) {
 
-  if (text.includes("ನೀನು ಯಾರು")) {
-    speak("ನಾನು ಸ್ಮಾರ್ಟ್ ಬಿಲ್ಲಿಂಗ್ ಎಐ ವ್ಯವಸ್ಥೆ.");
+  if (text.includes("നീ ആരാണ്")) {
+    speak("ഞാൻ സ്മാർട്ട് ബില്ലിംഗ് എ ഐ സംവിധാനം ആണ്.");
     return;
   }
 
-  if (text.includes("ನಿನ್ನನ್ನು ಯಾರು ನಿರ್ಮಿಸಿದರು")) {
-    speak("ನನ್ನನ್ನು ಎಸ್ ಬಿ ಎ ಎಸ್ ತಂಡ ಮತ್ತು ಜಗದೀಶ್ ನಿರ್ಮಿಸಿದ್ದಾರೆ.");
+  if (text.includes("നിന്നെ ആരാണ് സൃഷ്ടിച്ചത്")) {
+    speak("എന്നെ എസ് ബി എ എസ് ടീവും ജഗദീഷും സൃഷ്ടിച്ചു.");
     return;
   }
 
-  if (text.includes("ದಿನಾಂಕ")) {
+  if (text.includes("തീയതി")) {
     const today = new Date().toLocaleDateString(CONFIG.lang, {
       day: "numeric", month: "long", year: "numeric"
     });
-    speak(`ಇಂದಿನ ದಿನಾಂಕ ${today}`);
+    speak(`ഇന്നത്തെ തീയതി ${today}`);
     return;
   }
 
-  if (text.includes("ಕ್ಲಿಯರ್") || text.includes("ಎಲ್ಲವನ್ನೂ ತೆಗೆ")) {
+  if (text.includes("ക്ലിയർ") || text.includes("എല്ലാം നീക്കം")) {
     bill = {};
     updateBillDisplay();
-    speak("ಬಿಲ್ ಕ್ಲಿಯರ್ ಮಾಡಲಾಗಿದೆ.");
+    speak("ബിൽ ക്ലിയർ ചെയ്തു.");
     return;
   }
 
-  if (text.includes("ಬೆಲೆ")) {
+  if (text.includes("വില")) {
     for (const item in PRODUCTS) {
       if (text.includes(item)) {
-        speak(`${item} ಬೆಲೆ ರೂ ${PRODUCTS[item]}`);
+        speak(`${item} വില രൂപ ${PRODUCTS[item]}`);
         return;
       }
     }
   }
 
-  if (text.includes("ಒಟ್ಟು")) {
+  if (text.includes("ആകെ")) {
     const total = calculateTotal();
-    speak(`ಒಟ್ಟು ಮೊತ್ತ ರೂ ${total}`);
+    speak(`ആകെ തുക രൂപ ${total}`);
     return;
   }
 
-  if (text.includes("ಮರುಕಳಿ")) {
+  if (text.includes("വീണ്ടും")) {
     if (Object.keys(bill).length === 0) {
-      speak("ಬಿಲ್ ಖಾಲಿಯಾಗಿದೆ.");
+      speak("ബിൽ കാലിയാണു.");
       return;
     }
     const summary = Object.entries(bill).map(([item, qty]) => `${qty} ${item}`);
-    speak(`ನಿಮ್ಮ ಬಿಲ್ಲಿನಲ್ಲಿ ${summary.join(", ")}`);
+    speak(`നിങ്ങളുടെ ബിലിൽ ${summary.join(", ")}`);
     return;
   }
 
-  if (text.includes("ತೆಗೆ")) {
+  if (text.includes("നീക്കം")) {
     let qty = getQuantityFromText(text);
     for (const item in bill) {
       if (text.includes(item)) {
         bill[item] -= qty;
         if (bill[item] <= 0) delete bill[item];
         updateBillDisplay();
-        speak(`${qty} ${item} ತೆಗೆದುಹಾಕಲಾಗಿದೆ.`);
+        speak(`${qty} ${item} നീക്കം ചെയ്തു.`);
         return;
       }
     }
   }
 
-  const parts = text.split(" ಮತ್ತು ");
+  const parts = text.split("യും");
   const added = [];
 
   parts.forEach(part => {
@@ -177,18 +177,18 @@ function handleCommand(text) {
 
   if (added.length) {
     updateBillDisplay();
-    speak(`${added.join(" ಮತ್ತು ")} ಸೇರಿಸಲಾಗಿದೆ.`);
+    speak(`${added.join("യും")} ചേർത്തു.`);
     return;
   }
 
-  speak("ಕ್ಷಮಿಸಿ, ನನಗೆ ಅರ್ಥವಾಗಲಿಲ್ಲ.");
+  speak("ക്ഷമിക്കണം, എനിക്ക് മനസ്സിലായില്ല.");
 }
 
 /* =====================
    BILL UI
 ===================== */
 function updateBillDisplay() {
-  let html = "<b>ಬಿಲ್</b><br>";
+  let html = "<b>ബിൽ</b><br>";
   let total = 0;
 
   for (const item in bill) {
@@ -197,7 +197,7 @@ function updateBillDisplay() {
     html += `${item} x ${bill[item]} = ₹${cost}<br>`;
   }
 
-  html += `<b>ಒಟ್ಟು: ₹${total}</b>`;
+  html += `<b>ആകെ: ₹${total}</b>`;
   DOM.bill.innerHTML = html;
 }
 
