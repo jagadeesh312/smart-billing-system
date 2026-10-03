@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./chat.css" />
+  </head>
+  <body class="with-shell">
+    <header class="site-header glass">
+      <a class="logo" href="home.html">
+        <img src="logo.png" alt="Logo" class="logo-img" />
+        <span>SBAS</span>
+      </a>
+      <nav class="top-nav">
+        <a href="home.html">Home</a>
+        <a href="ai-voice.html">AI Voice</a>
+        <a class="active" href="live-chat.html">Live Chat</a>
+        <a href="main.html">Billing</a>
+      </nav>
+    </header>
+
+    <main class="app-shell with-header">
+      <aside class="sidebar glass">
+        <div class="brand-row">
+          <div class="brand">
+            <span class="logo-dot"></span>
+            <strong>Admin Console</strong>
+          </div>
+          <button id="logout-btn" class="secondary-btn" type="button">Logout</button>
+        </div>
+
+        <div id="admin-meta" class="auth-subtitle" style="margin: 10px 0 0">Loading admin profile...</div>
+
+        <div class="search-wrap">
+          <input id="user-search" class="search-input" type="text" placeholder="Search users" />
+        </div>
+
+        <div id="user-list" class="user-list"></div>
+      </aside>
+
+      <section class="chat-panel glass">
+        <header class="chat-header">
+          <div>
+            <h2 id="chat-user-name">Select a user</h2>
+            <p id="chat-user-meta">Choose a user from the sidebar to open a chat.</p>
+          </div>
+
+          <div class="header-actions">
+            <button id="block-btn" class="warn-btn hidden" type="button">Block</button>
+            <button id="delete-chat-btn" class="danger-btn hidden" type="button">Delete Chat</button>
+          </div>
+        </header>
+
+        <div id="chat-error" class="error-box hidden"></div>
+        <div id="typing-indicator" class="typing-text hidden"></div>
+        <div id="messages" class="messages">
+          <div class="center-state">No chat selected.</div>
+        </div>
+
+        <div class="message-compose">
+          <textarea id="message-input" class="message-input" placeholder="Type a message" disabled></textarea>
+          <button id="send-btn" class="send-btn" type="button" disabled title="Send">Send</button>
+        </div>
+      </section>
+    </main>
+
+    <script src="./env.js"></script>
+    <script type="module" src="./admin.js"></script>
+  </body>
+</html>

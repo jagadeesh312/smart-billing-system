@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SBAS - Home</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="site-page">
+  <div class="page-grid"></div>
+
+  <header class="site-header glass">
+    <a class="logo" href="home.html" aria-label="SBAS Home">
+      <img class="logo-img" src="https://i.ibb.co/k24yd8mS/Chat-GPT-Image-Feb-18-2026-05-00-19-PM-removebg-preview.png" alt="SBAS logo" />
+      <span class="logo-text">SBAS</span>
+    </a>
+
+    <button class="menu-toggle" aria-label="Open navigation">&#9776;</button>
+
+    <nav class="nav-links" id="mainNav">
+      <a href="home.html">Home</a>
+      <a href="ai-voice.html">AI Voice</a>
+      <a href="live-chat.html">Live Chat</a>
+      <a href="main.html">Billing</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="index chat.html" class="login-link">Login</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="section hero">
+      <div class="hero-grid">
+        <div class="hero-left">
+          <p class="eyebrow">Enterprise Automation Workspace</p>
+          <h1>Smart Billing &amp; AI Support, Simplified.</h1>
+          <p class="hero-subtext">SBAS unifies voice automation, live messaging, and subscription management into one intelligent workspace built for growing teams.</p>
+          <div class="hero-actions">
+            <a class="btn-primary" href="main.html">Get Started</a>
+            <a class="btn-secondary" href="live-chat.html">View Demo</a>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="mockup-glow"></div>
+          <article class="dashboard-mockup glass floating">
+            <div class="mockup-top">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="mockup-content">
+              <div class="mockup-banner">
+                <div>
+                  <p class="mockup-label">Auto Billing</p>
+                  <h4 id="invoice-number">Invoice #SB-20841</h4>
+                </div>
+                <span class="mockup-badge" id="billing-status">Processing</span>
+              </div>
+              <div class="mockup-stats">
+                <div class="mockup-tile">
+                  <p>Due</p>
+                  <strong id="due-value">$480</strong>
+                </div>
+                <div class="mockup-tile">
+                  <p>Tax</p>
+                  <strong id="tax-value">$34</strong>
+                </div>
+                <div class="mockup-tile">
+                  <p>Total</p>
+                  <strong id="total-value">$514</strong>
+                </div>
+              </div>
+              <div class="mockup-process">
+                <div class="process-step done" id="process-step-1"><span></span><p>Usage calculated</p></div>
+                <div class="process-step done" id="process-step-2"><span></span><p>Invoice generated</p></div>
+                <div class="process-step active" id="process-step-3"><span></span><p>Payment reminder sent</p></div>
+              </div>
+              <div class="mockup-table">
+                <div class="table-row"><span>Starter Plan</span><strong id="plan-value">$399</strong></div>
+                <div class="table-row"><span>Voice Minutes Add-on</span><strong id="addon-value">$81</strong></div>
+                <div class="table-row total"><span>Grand Total</span><strong id="grand-total-value">$514</strong></div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="trust-grid">
+        <article class="glass trust-card">
+          <div class="mini-icon">U</div>
+          <h3>99.9%</h3>
+          <p>Platform Uptime</p>
+        </article>
+        <article class="glass trust-card">
+          <div class="mini-icon">R</div>
+          <h3>&lt;2 Minute</h3>
+          <p>Support Response</p>
+        </article>
+        <article class="glass trust-card">
+          <div class="mini-icon">A</div>
+          <h3>24/7</h3>
+          <p>AI Voice Availability</p>
+        </article>
+        <article class="glass trust-card">
+          <div class="mini-icon">S</div>
+          <h3>Enterprise-Grade</h3>
+          <p>Security</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <p class="eyebrow">Platform Features</p>
+        <h2>Core capabilities for dependable operations</h2>
+      </div>
+
+      <div class="feature-grid">
+        <article class="glass feature-card">
+          <div class="feature-icon">AI</div>
+          <h3>AI Voice Automation</h3>
+          <p>Automate inbound and outbound calls with intelligent voice workflows powered by AI.</p>
+          <a class="feature-btn" href="ai-voice.html">Open AI Voice</a>
+        </article>
+        <article class="glass feature-card">
+          <div class="feature-icon">CH</div>
+          <h3>Live Customer Chat</h3>
+          <p>Engage customers in real-time with smart routing, quick replies, and automated responses.</p>
+          <a class="feature-btn" href="live-chat.html">Open Live Chat</a>
+        </article>
+        <article class="glass feature-card">
+          <div class="feature-icon">BL</div>
+          <h3>Smart Subscription Billing</h3>
+          <p>Manage plans, renewals, invoices, and payment tracking with seamless automation.</p>
+          <a class="feature-btn" href="main.html">Open Billing</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <article class="glass metrics-panel">
+        <div class="section-head compact">
+          <p class="eyebrow">Live Metrics</p>
+          <h2>Operational status in real time</h2>
+        </div>
+        <div class="metrics-grid">
+          <div class="metric-item">
+            <p>Active Sessions</p>
+            <strong data-counter="1248">0</strong>
+          </div>
+          <div class="metric-item">
+            <p>Tickets Resolved</p>
+            <strong data-counter="38762">0</strong>
+          </div>
+          <div class="metric-item">
+            <p>Revenue Processed</p>
+            <strong data-counter="942000" data-prefix="$">$0</strong>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>Built by a Dedicated Team</h2>
+        <p class="team-subtext">SBAS is developed and maintained by a focused team of 6 professionals committed to building secure and intelligent automation systems.</p>
+      </div>
+
+      <div class="team-grid">
+        <article class="glass team-card">
+          <div class="avatar">JK</div>
+          <h3>Jagadeesh Kumar</h3>
+          <p class="role">Founder & Full Stack Developer</p>
+          <p>Leads system architecture and delivery quality.</p>
+        </article>
+        <article class="glass team-card">
+          <div class="avatar">PS</div>
+          <h3>Priya Sharma</h3>
+          <p class="role">UI/UX Designer</p>
+          <p>Designs clear interfaces for business workflows.</p>
+        </article>
+        <article class="glass team-card">
+          <div class="avatar">AR</div>
+          <h3>Arjun Reddy</h3>
+          <p class="role">Backend Developer</p>
+          <p>Builds secure, scalable service infrastructure.</p>
+        </article>
+        <article class="glass team-card">
+          <div class="avatar">SP</div>
+          <h3>Sneha Patel</h3>
+          <p class="role">AI Engineer</p>
+          <p>Develops automation and voice intelligence logic.</p>
+        </article>
+        <article class="glass team-card">
+          <div class="avatar">RV</div>
+          <h3>Rahul Verma</h3>
+          <p class="role">Support Manager</p>
+          <p>Ensures service quality and response consistency.</p>
+        </article>
+        <article class="glass team-card">
+          <div class="avatar">MI</div>
+          <h3>Meena Iyer</h3>
+          <p class="role">Billing & Finance Lead</p>
+          <p>Oversees billing controls and financial reporting.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <article class="glass cta-card">
+        <h2>Ready to modernize your billing and support operations?</h2>
+        <p>Start using SBAS to streamline automation, improve response time, and scale efficiently.</p>
+        <a class="btn-primary" href="dashboard.html">Launch Dashboard</a>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-footer glass">
+    <div class="footer-col">
+      <div class="footer-brand">
+        <img class="logo-img" src="https://i.ibb.co/k24yd8mS/Chat-GPT-Image-Feb-18-2026-05-00-19-PM-removebg-preview.png" alt="SBAS logo" />
+        <span class="logo-text">SBAS</span>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <a href="home.html">Home</a>
+      <a href="dashboard.html">Dashboard</a>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <a href="ai-voice.html">AI Voice</a>
+      <a href="live-chat.html">Live Chat</a>
+      <a href="main.html">Billing</a>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <a href="index chat.html">Support</a>
+      <span>support@sbas.local</span>
+    </div>
+    <p class="copyright">&copy; 2026 SBAS - Smart Billing AI System. All rights reserved.</p>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const snapshots = [
+        { invoice: "Invoice #SB-20841", due: 480, tax: 34, plan: 399, addon: 81, status: "Processing", step: 3 },
+        { invoice: "Invoice #SB-20842", due: 620, tax: 45, plan: 520, addon: 100, status: "Generated", step: 2 },
+        { invoice: "Invoice #SB-20843", due: 390, tax: 28, plan: 330, addon: 60, status: "Reminder Sent", step: 3 },
+        { invoice: "Invoice #SB-20844", due: 740, tax: 53, plan: 620, addon: 120, status: "Paid", step: 1 }
+      ];
+      let snapshotIndex = 0;
+
+      function formatMoney(value) {
+        return "$" + Number(value).toLocaleString();
+      }
+
+      function updateBillingMockup() {
+        const data = snapshots[snapshotIndex];
+        snapshotIndex = (snapshotIndex + 1) % snapshots.length;
+
+        const invoice = document.getElementById("invoice-number");
+        const status = document.getElementById("billing-status");
+        const due = document.getElementById("due-value");
+        const tax = document.getElementById("tax-value");
+        const total = document.getElementById("total-value");
+        const plan = document.getElementById("plan-value");
+        const addon = document.getElementById("addon-value");
+        const grand = document.getElementById("grand-total-value");
+        const step1 = document.getElementById("process-step-1");
+        const step2 = document.getElementById("process-step-2");
+        const step3 = document.getElementById("process-step-3");
+        if (!invoice || !status || !due || !tax || !total || !plan || !addon || !grand || !step1 || !step2 || !step3) return;
+
+        invoice.textContent = data.invoice;
+        status.textContent = data.status;
+        due.textContent = formatMoney(data.due);
+        tax.textContent = formatMoney(data.tax);
+        total.textContent = formatMoney(data.due + data.tax);
+        plan.textContent = formatMoney(data.plan);
+        addon.textContent = formatMoney(data.addon);
+        grand.textContent = formatMoney(data.due + data.tax);
+
+        step1.className = "process-step done";
+        step2.className = data.step >= 2 ? "process-step done" : "process-step";
+        step3.className = data.step === 3 ? "process-step active" : "process-step";
+      }
+
+      updateBillingMockup();
+      setInterval(updateBillingMockup, 10000);
+
+      const counters = document.querySelectorAll("[data-counter]");
+      if (counters.length) {
+        const observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+
+            const el = entry.target;
+            const target = Number(el.getAttribute("data-counter") || "0");
+            const prefix = el.getAttribute("data-prefix") || "";
+            const start = performance.now();
+            const duration = 1200;
+
+            function tick(now) {
+              const progress = Math.min((now - start) / duration, 1);
+              const value = Math.floor(progress * target);
+              el.textContent = prefix + value.toLocaleString();
+              if (progress < 1) {
+                requestAnimationFrame(tick);
+              }
+            }
+
+            requestAnimationFrame(tick);
+            observer.unobserve(el);
+          });
+        }, { threshold: 0.35 });
+
+        counters.forEach(function (counter) {
+          observer.observe(counter);
+        });
+      }
+    });
+  </script>
+</body>
+</html>
+
