@@ -87,3 +87,112 @@ Jagadeesh
 ## 📄 License
 
 License not yet specified.
+
+
+# 🧾 Smart Billing AI System
+
+> A modern AI-powered billing platform for retail businesses.
+
+![Status](https://img.shields.io/badge/Status-In%20Development-orange)
+![Platform](https://img.shields.io/badge/Platform-Web-blue)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6-yellow)
+
+---
+
+## 🚀 About
+
+**Smart Billing AI System** is a web-based billing platform designed to simplify retail shop operations.
+
+The project combines billing, product management, sales tracking, digital payments, and AI assistance into a single platform.
+
+The goal is to reduce manual work and make the billing process faster, simpler, and smarter.
+
+---
+
+## ✨ Features
+
+### 🧾 Smart Billing
+
+- Create customer bills
+- Add multiple products
+- Calculate totals
+- GST calculation
+- Generate invoices
+- Print bills
+
+### 📦 Product Management
+
+- Add products
+- Edit products
+- Delete products
+- Manage prices
+- Track stock
+- Search products
+
+### 🤖 AI Assistant
+
+- AI-powered product selection
+- Natural-language billing
+- Text-based commands
+- Voice-based billing
+- Multilingual assistance
+
+### 💳 Digital Payments
+
+- UPI QR payment
+- Digital payment workflow
+- Payment information
+
+### 📊 Sales Management
+
+- Billing history
+- Sales tracking
+- Revenue information
+- Reports
+
+### 🔐 Authentication
+
+- Admin login
+- Employee login
+- User authentication
+- Role-based access
+
+---
+
+## 🖥️ UI
+
+The application uses a modern glass-style interface with a focus on:
+
+- Clean design
+- Responsive layout
+- Mobile support
+- Simple navigation
+- Fast billing workflow
+
+---
+
+## 🛠️ Technology Stack
+
+| Technology | Purpose |
+|---|---|
+| HTML | Structure |
+| CSS | Styling |
+| JavaScript | Application logic |
+| Firebase | Authentication & database |
+| Gemini API | AI functionality |
+| QR Code | Digital payments |
+
+---
+
+## 📂 Project Structure
+
+```text
+smart-billing-system/
+│
+├── index.html
+├── style.css
+├── script.js
+│
+├── README.md
+├── features.md
+└── ROADMAP.md
