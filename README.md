@@ -196,3 +196,34 @@ smart-billing-system/
 ├── README.md
 ├── features.md
 └── ROADMAP.md
+
+
+# 🧾 Smart Billing AI System
+
+A modern **AI-powered billing system** designed to make retail billing faster, easier, and smarter.
+
+The project combines billing, inventory management, AI assistance, and digital payments into one platform.
+
+## 🚀 Features
+
+- 🤖 AI Billing Assistant
+- 🎙️ Voice-based product selection
+- 🧾 Automatic bill generation
+- 💰 GST calculation
+- 💳 UPI QR payment
+- 📦 Product management
+- 📊 Sales management
+- 👨‍💼 Admin dashboard
+- 👤 Employee login
+- 🔥 Firebase database
+- 📱 Responsive interface
+- 🖨️ Printable invoices
+
+## 🧠 AI Assistant
+
+The AI assistant is designed to understand natural-language billing requests.
+
+Example:
+
+```text
+"Add 2 notebooks and 3 pens"
