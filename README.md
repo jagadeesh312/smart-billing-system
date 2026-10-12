@@ -227,3 +227,43 @@ Example:
 
 ```text
 "Add 2 notebooks and 3 pens"
+# 🧾 Smart Billing System
+
+A smart billing website project built with JavaScript. Currently in the **planning and documentation phase**.
+
+## 📌 About the Project
+This project aims to simplify billing for small shops and businesses by
+letting them create bills quickly, track items, and calculate totals
+automatically.
+
+## ✨ Planned Features
+- Add, edit, and remove products
+- Automatic total, tax, and discount calculation
+- Printable / downloadable invoices
+- Customer and bill history
+- Simple, responsive user interface
+
+## 🛠️ Tech Stack
+- **Frontend:** HTML, CSS, JavaScript
+- **Storage:** Local Storage (database planned for later)
+
+## 📂 Project Status
+- [x] Idea and requirements
+- [x] Planning and documentation
+- [ ] UI design
+- [ ] Core billing logic
+- [ ] Testing and deployment
+
+## 🚀 Getting Started
+1. Clone the repository
+```bash
+   git clone https://github.com/jagadeesh312/smart-billing-system.git
+```
+2. Open the project folder
+3. Open `index.html` in your browser
+
+## 🤝 Contributing
+Suggestions and ideas are welcome. Open an issue or submit a pull request.
+
+## 👤 Author
+**Jagadeesh** – [@jagadeesh312](https://github.com/jagadeesh312)
