@@ -267,3 +267,43 @@ Suggestions and ideas are welcome. Open an issue or submit a pull request.
 
 ## 👤 Author
 **Jagadeesh** – [@jagadeesh312](https://github.com/jagadeesh312)
+
+# 🧾 Smart Billing System
+
+A smart billing website project, currently in the **planning and documentation phase**.
+
+## 📌 Overview
+This project aims to make billing simple and fast for small shops and businesses. It will cover invoice generation, product management, and sales reports.
+
+## ✨ Planned Features
+- Create and print invoices
+- Product and stock management
+- Customer records
+- Daily and monthly sales reports
+- GST / tax calculation
+
+## 🛠️ Tech Stack
+| Layer     | Technology            |
+|-----------|-----------------------|
+| Frontend  | HTML, CSS, JavaScript |
+| Backend   | Node.js (planned)     |
+| Database  | MongoDB (planned)     |
+
+## 🚀 Getting Started
+```bash
+git clone https://github.com/jagadeesh312/smart-billing-system.git
+cd smart-billing-system
+```
+
+## 🗺️ Roadmap
+- [x] Project idea and planning
+- [ ] UI design
+- [ ] Billing module
+- [ ] Reports and dashboard
+- [ ] Deployment
+
+## 🤝 Contributing
+Suggestions and pull requests are welcome.
+
+## 👤 Author
+**Jagadeesh** – [@jagadeesh312](https://github.com/jagadeesh312)
