@@ -347,3 +347,29 @@ Suggestions and ideas are welcome. Open an issue or submit a pull request.
 
 ## 📄 License
 This project is licensed under the MIT License.
+
+# 🧾 Smart Billing System
+
+A smart billing website project, currently in the **planning and documentation phase**.
+
+## 📌 Overview
+
+Smart Billing System aims to simplify invoice creation, customer management, and payment tracking for small businesses and shops. The goal is a fast, easy-to-use web app that reduces manual billing work and errors.
+
+## ✨ Planned Features
+
+- Create and print/download invoices
+- Product and inventory management
+- Customer records and purchase history
+- Automatic tax and discount calculation
+- Sales reports and dashboard
+- Search and filter bills
+- Responsive design for desktop and mobile
+
+## 🛠️ Tech Stack
+
+- **Frontend:** HTML, CSS, JavaScript
+- **Backend (planned):** Node.js / Express
+- **Database (planned):** MongoDB or MySQL
+
+## 📂 Project Structure (Planned)
